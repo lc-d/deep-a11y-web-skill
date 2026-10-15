@@ -26,8 +26,10 @@ codex plugin marketplace add /path/to/your/clone
 Invoke a skill in Codex chat with `@` and pass the URL of the page to audit:
 
 ```text
-@a11y-page-audit http://localhost:3000
+@a11y-page-audit <URL>
 ```
+
+`<URL>` is required: the full URL of the single page to audit, e.g. `http://localhost:3000`.
 
 Or just describe the task (e.g. _"audit http://localhost:3000 for accessibility issues"_) and Codex picks the right
 skill.

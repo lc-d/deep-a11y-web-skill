@@ -29,9 +29,9 @@ Most quality checks stop at an automated score. These skills go deeper:
 
 ## Available skills
 
-| Skill                                   | Description                                                                                                                                         | Use when                                                                    |
-|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| **[a11y-page-audit](#a11y-page-audit)** | Single-page accessibility audit with Lighthouse, axe-core and live browser inspection, per WCAG 2.2 and the WAI-ARIA APG patterns, then fixes them | "Audit this page for accessibility", "WCAG check", "Fix a11y issues on …" |
+| Skill                                   | Command                   | Description                                                                                                                                         | Use when                                                                    |
+|-----------------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **[a11y-page-audit](#a11y-page-audit)** | `/a11y-page-audit <URL>` | Single-page accessibility audit with Lighthouse, axe-core and live browser inspection, per WCAG 2.2 and the WAI-ARIA APG patterns, then fixes them | "Audit this page for accessibility", "WCAG check", "Fix a11y issues on …" |
 
 ## Quick start
 
@@ -113,21 +113,38 @@ your conversation. Note that the audit scripts need a local shell, so the full w
 
 ### Usage
 
-Invoke the skill explicitly, passing the URL of the page to audit:
+Invoke the skill explicitly, passing the URL of the page to audit as its argument:
+
+```text
+/a11y-page-audit <URL>
+```
+
+| Argument | Required | Description                                                                                                  |
+|----------|----------|--------------------------------------------------------------------------------------------------------------|
+| `<URL>`  | Yes      | Full URL of the single page to audit, reachable from your machine (e.g. `http://localhost:3000/checkout`). |
+
+For example:
 
 ```text
 /a11y-page-audit http://localhost:3000/checkout
 ```
 
-Or just ask; skills activate automatically when your request matches their description:
+With the Claude Code plugin the command is namespaced: `/deep-a11y-web-skills:a11y-page-audit <URL>`. In Codex use
+`@a11y-page-audit <URL>`.
+
+Or just ask, including the URL in your request; skills activate automatically when your request matches their
+description:
 
 ```text
 Audit http://localhost:3000 for accessibility issues
 ```
 
 ```text
-Check this page against WCAG 2.2 and fix what you find
+Check http://localhost:3000/checkout against WCAG 2.2 and fix what you find
 ```
+
+> [!NOTE]
+> The skill audits one page per run. If you don't provide a URL, the agent asks you for one before starting.
 
 ## Skill details
 
@@ -135,6 +152,8 @@ Check this page against WCAG 2.2 and fix what you find
 
 Audits a single page for accessibility barriers using two independent automated engines plus live browser inspection,
 then turns the findings into concrete code fixes.
+
+**Usage:** `/a11y-page-audit <URL>`, where `<URL>` is the page to audit (required).
 
 **Trigger phrases:** "accessibility audit", "a11y", "WCAG", "screen reader", "keyboard navigation", "contrast",
 "alt text", "ARIA", "Lighthouse/axe accessibility check"

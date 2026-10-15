@@ -22,7 +22,8 @@ gemini extensions install /path/to/your/clone
 
 ## Usage
 
-Gemini activates a skill automatically when your prompt matches its description. Try:
+Gemini activates a skill automatically when your prompt matches its description. `a11y-page-audit` needs the URL of
+the page to audit, so include it in your prompt (if you don't, Gemini asks for it). Try:
 
 ```text
 Audit http://localhost:3000 for accessibility issues
