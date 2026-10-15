@@ -5,7 +5,7 @@ license: MIT
 argument-hint: <URL>
 metadata:
   author: LC.D
-  version: "1.1"
+  version: "1.0.0"
 ---
 
 # Accessibility audit
