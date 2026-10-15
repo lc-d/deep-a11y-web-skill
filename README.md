@@ -5,7 +5,7 @@ version: 0.2.0
 
 # Deep A11y Web Skills
 
-The final web accessibility agent to help front end developers build 100% accessible user interface component and web pages.
+The final web accessibility agent skill to help front end developers build 100% accessible user interface component and web pages.
 
 An [Agent Skills](https://agentskills.io/) that audit web pages for accessibility and fix what it find,
 against the highest standards: WCAG 2.2 and the WAI-ARIA Authoring Practices (APG).
