@@ -1,0 +1,18 @@
+{
+  "name": "deep-a11y-web-skills",
+  "plugins": [
+    {
+      "name": "deep-a11y-web-skills",
+      "description": "Single-page accessibility audits with Lighthouse, axe-core and live browser inspection, mapped to WCAG 2.2 and the WAI-ARIA APG patterns, with fixes applied only after your approval.",
+      "source": {
+        "source": "local",
+        "path": "./codex"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

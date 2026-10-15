@@ -1,0 +1,14 @@
+{
+  "name": "deep-a11y-web-skills",
+  "description": "Deep, local page-by-page web audits for AI agents: WCAG 2.2 and WAI-ARIA APG accessibility checks with Lighthouse, axe-core and live browser inspection, with fixes applied only after your approval.",
+  "version": "0.2.0",
+  "author": {
+    "name": "LC.D",
+    "url": "https://github.com/lc-d"
+  },
+  "homepage": "https://github.com/lc-d/deep-a11y-web-skill",
+  "repository": "https://github.com/lc-d/deep-a11y-web-skill",
+  "license": "MIT",
+  "keywords": ["accessibility", "a11y", "wcag", "aria", "lighthouse", "axe-core", "audit", "web"],
+  "skills": "./skills/"
+}

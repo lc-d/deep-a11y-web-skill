@@ -1,70 +1,206 @@
 ---
-name: deep-UI-web-skills
+name: deep-a11y-web-skills
 version: 0.2.0
 ---
 
-# UI-web-skills
+# Deep A11y Web Skills
 
-Benvenuti su `deep-UI-web-skills`! Una collezione di *[agent skill](https://agentskills.io/home)*, scritte con
-lo scopo di migliorare la qualità del codice, in conformità agli standard più elevati (Core Web Vitals, WCAG 2.2, Best
-Practices).
+A collection of [Agent Skills](https://agentskills.io/) that audit web pages for accessibility and fix what they find,
+against the highest standards: WCAG 2.2 and the WAI-ARIA Authoring Practices (APG).
 
-Le skill sono pensate per essere eseguite in ambiente di sviluppo testando pagine web locali. Prevedono sempre due
-fasi: (1) La produzione di un report con elenco delle criticità e (2) l'eventuale correzione delle criticità
-direttamente nel codice, dietro consenso dell'utente.
+**Stack-agnostic.** Works with any framework (React, Vue, Angular, Svelte, Next.js, Nuxt, Astro, plain HTML, and more)
+and with any agent that supports the Agent Skills format (Claude Code, Codex, Copilot, Gemini CLI, Cursor, OpenCode…).
 
-Le skill sono agnostiche sia rispetto al modello utilizzato che rispetto al linguaggio di programmazione e al framework
-adottato.
+## Why deep a11y web skills?
 
-*Nota:* Le skill sono scritte in lingua inglese per ridurre la quantità di token necessaria ed eventuali ambiguità
-dovute alla traduzione (in italiano per es. il costo the token aumenta di ~1.2–1.5x).
+Most quality checks stop at an automated score. These skills go deeper:
 
-## Come si usa
+- **Local, page-by-page audits** run in your development environment against the pages you are actually building
+- **Multiple independent engines**: Lighthouse and axe-core, cross-checked against each other
+- **Live browser inspection** of the rendered DOM, keyboard behaviour and focus management, at desktop and mobile
+  (320px) viewports
+- **Standards-mapped findings**: every issue is traced to a WCAG 2.2 success criterion and, for widgets, to the
+  matching WAI-ARIA APG pattern
+- **Report first, fix second**: each skill always works in two phases:
+  1. it produces a report listing the issues found;
+  2. it fixes them directly in your code, **only after you approve**.
 
-Puoi installare una o più skill copiando il loro contenuto dentro il progetto a cui stai lavorando.
+## Available skills
 
-1. Crea una nuova cartella alla radice del tuo progetto:
-    - `.agents/skills` se usi Codex o Grok
-    - `.github/skills` se usi CoPilot
-    - `.claude/skills` se usi Claude
-    - `.gemini/skills` se usi Gemini
-2. Copia la cartella della skill nella cartella appena creata, es. `.agents/skills/a11y-page-audit/*.*`.
-3. Lancia il tuo modello dentro il progetto e scrivi il prompt.
+| Skill                                   | Description                                                                                                                                         | Use when                                                                    |
+|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **[a11y-page-audit](#a11y-page-audit)** | Single-page accessibility audit with Lighthouse, axe-core and live browser inspection, per WCAG 2.2 and the WAI-ARIA APG patterns, then fixes them | "Audit this page for accessibility", "WCAG check", "Fix a11y issues on …" |
 
-*Nota*: Aggiungi la cartella appena creata nel `.gitignore` se non vuoi che venga tracciata dal tuo repository.
+## Quick start
 
-### Skills
+### Requirements
 
-| Skill             | Scopo                                                                                                                                                                            | Prompt                                                                                                 | Note                                                                                  |
-|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| **Accessibility** | Esegue test di accessibilità in locale – una pagina alla volta – usando Lighthouse, AXE-core e ispezione live del browser, secondo lo standard WCAG 2.2 e i pattern WAI-ARIA APG | `/a11y-page-audit <URL>`. Richiama la skill di accessibilità e indica l'url della pagina da analizzare | Per favorire l'ispezione del DOM, installa una *Browser Extensions* per il tuo agente |
-| **Performance**   | 🚧 Work in progress                                                                                                                                                              | 🚧 Work in progress                                                                                    | 🚧 Work in progress                                                                   |
+- **Node.js ≥ 20** (the audit scripts install their own dependencies on first run)
+- **Google Chrome / Chromium** installed locally (used by Lighthouse and axe-core)
+- A page reachable from your machine (e.g. `http://localhost:3000`)
+- *Recommended:* a browser extension or MCP server for your agent (e.g. Claude in Chrome,
+  [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp)) to enable live DOM inspection
 
-## Struttura del progetto
+### Installation
 
-Ciascuna skill vive nella propria cartella alla radice del progetto. *Al momento esiste solo la skill di audit di
-accessibilità (WCAG 2.2)*.
+#### npx (any agent)
 
+Install with the [`skills`](https://www.npmjs.com/package/skills) CLI, which detects your agent and copies the skills
+into the right folder:
+
+```bash
+npx skills add lc-d/deep-a11y-web-skill
 ```
-UI-web-skills/
-├── a11y-page-audit/          # Web accessibility (WCAG 2.2) audit skill
-│   ├── SKILL.md              # Entry point: workflow, tool routing, common fixes
-│   ├── references/           # Reference material loaded on demand
-│   │   ├── WCAG.md           # WCAG 2.2 success criteria quick reference
-│   │   ├── A11Y-PATTERNS.md  # Accessible code patterns
-│   │   ├── APG-PATTERNS.md   # WAI-ARIA APG patterns → components (mapping)
-│   │   └── AXE-RULES.md      # axe-core/Lighthouse rule ID → WCAG (mapping)
-│   └── scripts/              # Executable audit tooling
-│       ├── audit.sh          # Orchestrator: single-page audit
-│       ├── run-lighthouse.sh # Lighthouse accessibility audit wrapper
-│       ├── run-axe.mjs       # axe-core runner (via puppeteer-core)
-│       └── package.json      # Script dependencies (installed on first run)
-├── performance/              # 🚧 WIP!
+
+or
+
+```bash
+npx add-skill lc-d/deep-a11y-web-skill
+```
+
+#### Claude Code (plugin)
+
+Install as a versioned, namespaced plugin from inside Claude Code:
+
+```text
+/plugin marketplace add lc-d/deep-a11y-web-skill
+/plugin install deep-a11y-web-skills@deep-a11y-web-skills
+```
+
+Skills are then namespaced (e.g. `/deep-a11y-web-skills:a11y-page-audit`) and update with `/plugin update`. The plugin
+reads the same `skills/` directory as the manual copy below, with no duplication.
+
+#### Codex
+
+```bash
+codex plugin marketplace add lc-d/deep-a11y-web-skill
+```
+
+Then invoke the skill with `@` (e.g. `@a11y-page-audit http://localhost:3000`). See
+[docs/codex-setup.md](docs/codex-setup.md) for local installation and troubleshooting.
+
+#### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/lc-d/deep-a11y-web-skill
+```
+
+Skills are auto-discovered and activate when your prompt matches their description. See
+[docs/gemini-setup.md](docs/gemini-setup.md) for workspace mode and troubleshooting.
+
+#### Manual
+
+Clone the repository and copy the skill folder into your project's (or your user's) skills directory:
+
+| Agent              | Project folder    | User folder          |
+|--------------------|-------------------|----------------------|
+| Claude Code        | `.claude/skills/` | `~/.claude/skills/`  |
+| Codex / Grok       | `.agents/skills/` | `~/.agents/skills/`  |
+| GitHub Copilot     | `.github/skills/` | —                    |
+| Gemini CLI         | `.gemini/skills/` | `~/.gemini/skills/`  |
+
+```bash
+git clone https://github.com/lc-d/deep-a11y-web-skill.git
+cp -r deep-a11y-web-skill/skills/a11y-page-audit .claude/skills/
+```
+
+#### claude.ai
+
+Upload the skill folder as a custom skill (Settings → Capabilities → Skills), or paste the `SKILL.md` contents into
+your conversation. Note that the audit scripts need a local shell, so the full workflow is best run from Claude Code.
+
+### Usage
+
+Invoke the skill explicitly, passing the URL of the page to audit:
+
+```text
+/a11y-page-audit http://localhost:3000/checkout
+```
+
+Or just ask; skills activate automatically when your request matches their description:
+
+```text
+Audit http://localhost:3000 for accessibility issues
+```
+
+```text
+Check this page against WCAG 2.2 and fix what you find
+```
+
+## Skill details
+
+### a11y-page-audit
+
+Audits a single page for accessibility barriers using two independent automated engines plus live browser inspection,
+then turns the findings into concrete code fixes.
+
+**Trigger phrases:** "accessibility audit", "a11y", "WCAG", "screen reader", "keyboard navigation", "contrast",
+"alt text", "ARIA", "Lighthouse/axe accessibility check"
+
+**What it does:**
+
+- Runs Lighthouse (accessibility category) and axe-core on the page
+- Inspects the live page at desktop (≥ 1024px) and mobile (320px, WCAG 1.4.10 reflow) viewports
+- Checks keyboard operability, focus order and visibility, and collapsed navigation (e.g. hamburger menus)
+- Maps every automated rule to its WCAG 2.2 success criterion and every custom widget to its WAI-ARIA APG pattern
+- Produces a prioritised report, then applies fixes only with your approval
+
+**Bundled references:** WCAG 2.2 quick reference, accessible code patterns, APG pattern mapping, axe-core/Lighthouse
+rule → WCAG mapping.
+
+## Project structure
+
+Each skill lives in its own folder under `skills/` and is self-contained, with all the scripts and references it needs.
+The same folder is shared by every distribution channel (Claude Code, Codex, Gemini CLI, npx), with no duplication.
+
+```text
+deep-a11y-web-skill/
+├── skills/                       # All skills (single source of truth)
+│   └── a11y-page-audit/          # Web accessibility (WCAG 2.2) audit skill
+│       ├── SKILL.md              # Entry point: workflow, tool routing, common fixes
+│       ├── references/           # Reference material loaded on demand
+│       │   ├── WCAG.md           # WCAG 2.2 success criteria quick reference
+│       │   ├── A11Y-PATTERNS.md  # Accessible code patterns
+│       │   ├── APG-PATTERNS.md   # WAI-ARIA APG patterns → components (mapping)
+│       │   └── AXE-RULES.md      # axe-core/Lighthouse rule ID → WCAG (mapping)
+│       └── scripts/              # Executable audit tooling
+│           ├── audit.sh          # Orchestrator: single-page audit
+│           ├── run-lighthouse.sh # Lighthouse accessibility audit wrapper
+│           ├── run-axe.mjs       # axe-core runner (via puppeteer-core)
+│           └── package.json      # Script dependencies (installed on first run)
+├── .claude-plugin/               # Claude Code plugin + marketplace manifests
+├── codex/                        # Codex plugin (manifest + symlink to skills/)
+├── .agents/plugins/              # Codex marketplace manifest
+├── gemini-extension.json         # Gemini CLI extension manifest
+├── .gemini/skills                # Symlink to skills/ (Gemini workspace mode)
+├── docs/                         # Codex and Gemini setup guides
+├── LICENSE
 └── README.md
 ```
 
-Ciascuna skill è auto consistente e ha al suo interno tutti gli script e le referenze necessarie:
+- **`SKILL.md`**: the skill definition (frontmatter + instructions).
+- **`references/`**: supporting documents, loaded only when needed.
+- **`scripts/`**: executable scripts the skill uses to do its work.
 
-- **`SKILL.md`** — La definizione della skill (frontmatter + istruzioni).
-- **`references/`** — documenti di supporto utilizzati al momento del bisogno.
-- **`scripts/`** — script eseguibili che la skill utilizza per il suo lavoro.
+## Contributing
+
+Contributions are welcome! Please follow the [Agent Skills specification](https://agentskills.io/specification).
+
+1. Fork the repository
+2. Create your skill in `skills/{skill-name}/SKILL.md`
+3. Keep `SKILL.md` under 500 lines (move details into `references/`)
+4. Write skills in English and keep them model-, language- and framework-agnostic
+5. Submit a pull request
+
+## Resources
+
+- [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
+- [WAI-ARIA Authoring Practices Guide (APG)](https://www.w3.org/WAI/ARIA/apg/)
+- [axe-core rules](https://dequeuniversity.com/rules/axe/)
+- [Google Lighthouse documentation](https://developer.chrome.com/docs/lighthouse/)
+- [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+- [Agent Skills specification](https://agentskills.io/specification)
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.

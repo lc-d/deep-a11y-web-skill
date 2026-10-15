@@ -1,0 +1,17 @@
+{
+  "name": "deep-a11y-web-skills",
+  "owner": {
+    "name": "LC.D",
+    "url": "https://github.com/lc-d"
+  },
+  "metadata": {
+    "description": "Deep, local page-by-page web audits for AI agents: accessibility audits mapped to WCAG 2.2 and the WAI-ARIA APG patterns."
+  },
+  "plugins": [
+    {
+      "name": "deep-a11y-web-skills",
+      "source": "./",
+      "description": "Single-page accessibility audits with Lighthouse, axe-core and live browser inspection, mapped to WCAG 2.2 and the WAI-ARIA APG patterns, with fixes applied only after your approval."
+    }
+  ]
+}

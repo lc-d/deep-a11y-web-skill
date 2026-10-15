@@ -10,5 +10,5 @@
 *.sw?
 
 # Generated folders
-a11y-page-audit/scripts/node_modules
+skills/*/scripts/node_modules
 a11y-audit-*/

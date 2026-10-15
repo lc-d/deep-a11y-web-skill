@@ -1,0 +1,5 @@
+{
+  "name": "deep-a11y-web-skills",
+  "version": "0.2.0",
+  "description": "Deep, local page-by-page web audits for AI agents: WCAG 2.2 and WAI-ARIA APG accessibility checks with Lighthouse, axe-core and live browser inspection, with fixes applied only after your approval."
+}
