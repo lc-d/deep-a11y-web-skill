@@ -1,6 +1,6 @@
 ---
 name: deep-a11y-web-skills
-version: 1.0.0
+version: 1.0.1
 ---
 
 # Deep A11y Web Skills

@@ -5,7 +5,7 @@ license: MIT
 argument-hint: <URL>
 metadata:
   author: Lorenzo Cataldi
-  version: "1.1"
+  version: "1.0.1"
 ---
 
 # Accessibility audit
