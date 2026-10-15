@@ -1,0 +1,13 @@
+{
+  "name": "accessibility-audit-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Local dependencies for the a11y-page-audit skill's axe-core runner. Not published.",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "axe-core": "^4.10.0",
+    "puppeteer-core": "^23.0.0"
+  }
+}

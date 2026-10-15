@@ -1,0 +1,14 @@
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Generated folders
+a11y-page-audit/scripts/node_modules
+a11y-audit-*/
