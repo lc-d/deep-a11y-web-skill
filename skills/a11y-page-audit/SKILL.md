@@ -4,8 +4,8 @@ description: Audit a single page for accessibility issues using Lighthouse, axe-
 license: MIT
 argument-hint: <URL>
 metadata:
-  author: LC.D
-  version: "1.0.0"
+  author: Lorenzo Cataldi
+  version: "1.1"
 ---
 
 # Accessibility audit
